@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Typography, Box } from '@mui/material';
+import ROUTES from "../Constants/route.ts"
 
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const AdminPage: React.FC = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate('/movie')}
+          onClick={() => navigate(ROUTES.MOVIE_TABLE)}
           sx={{
             width: 150,
             height: 150,
@@ -36,7 +37,7 @@ const AdminPage: React.FC = () => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => navigate('/add-movie')}
+          onClick={() => navigate(ROUTES.ADD_MOVIE)}
           sx={{
             width: 150,
             height: 150,

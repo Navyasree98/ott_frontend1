@@ -5,6 +5,7 @@ import {
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowBack } from '@mui/icons-material';
+import ROUTES from '../Constants/route.ts';
 
 const EditMoviePage: React.FC = () => {
   const { id } = useParams();
@@ -46,7 +47,7 @@ const EditMoviePage: React.FC = () => {
         Authorization: `Bearer ${token}`, 
   },
 });
-      navigate('/movie'); // Redirect to dashboard
+      navigate(ROUTES.MOVIE_TABLE); // Redirect to dashboard
     } catch (error) {
       console.error('Failed to update movie:', error);
     }
@@ -55,7 +56,7 @@ const EditMoviePage: React.FC = () => {
   return (
     <>
    <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-    <IconButton color="primary" onClick={() => navigate("/movie")}>
+    <IconButton color="primary" onClick={() => navigate(ROUTES.MOVIE_TABLE)}>
        <ArrowBack />
     </IconButton>
   </Box>

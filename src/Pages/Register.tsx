@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import React from 'react';
+import { TextField, Button, Typography, MenuItem } from '@mui/material';
+import '../Styles/Register.css';
+import ROUTES from '../Constants/route.ts';
 
 function Register() {
   const [form, setForm] = useState({
@@ -11,18 +13,61 @@ function Register() {
     role: 'user'
   });
 
+  const [errors, setErrors] = useState({
+    email: '',
+    password: ''
+  });
+
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password: string) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&_])[A-Za-z\d@$!%*?#&_]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+
+    // Inline validation
+    if (e.target.name === 'email') {
+      setErrors({ ...errors, email: validateEmail(e.target.value) ? '' : 'Invalid email format' });
+    }
+
+    if (e.target.name === 'password') {
+      setErrors({
+        ...errors,
+        password: validatePassword(e.target.value)
+          ? ''
+          : 'Password must be 8+ chars, include uppercase, lowercase, number & special char'
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const emailValid = validateEmail(form.email);
+    const passwordValid = validatePassword(form.password);
+
+    if (!emailValid || !passwordValid) {
+      setErrors({
+        email: emailValid ? '' : 'Invalid email format',
+        password: passwordValid
+          ? ''
+          : 'Password must be 8+ chars, include uppercase, lowercase, number & special char'
+      });
+      return;
+    }
+
     try {
       const res = await axios.post('http://localhost:5000/api/auth/register', form);
       alert(res.data.message);
-      navigate('/login'); // redirect to login after successful registration
+      navigate(ROUTES.LOGIN);
     } catch (err: any) {
       alert(err.response?.data?.message || 'Error registering');
     }
@@ -30,56 +75,68 @@ function Register() {
 
   return (
     <div style={{ maxWidth: '400px', margin: '50px auto', textAlign: 'center' }}>
-      <form onSubmit={handleSubmit} style={formStyle}>
-        <h2>Register</h2>
-        <input
+      <form onSubmit={handleSubmit} className="register-form">
+        <Typography variant="h5" gutterBottom>Register</Typography>
+
+        <TextField
           name="name"
-          placeholder="Name"
-          onChange={handleChange}
+          label="Name"
+          variant="outlined"
+          fullWidth
           value={form.name}
-          style={{ display: 'block', width: '100%', padding: '10px', marginBottom: '10px' }}
+          onChange={handleChange}
+          sx={{ mb: 2 }}
         />
-        <input
+
+        <TextField
           name="email"
-          placeholder="Email"
-          onChange={handleChange}
+          label="Email"
+          variant="outlined"
+          fullWidth
+          type="email"
           value={form.email}
-          style={{ display: 'block', width: '100%', padding: '10px', marginBottom: '10px' }}
+          onChange={handleChange}
+          error={!!errors.email}
+          helperText={errors.email}
+          sx={{ mb: 2 }}
         />
-        <input
+
+        <TextField
           name="password"
+          label="Password"
+          variant="outlined"
+          fullWidth
           type="password"
-          placeholder="Password"
-          onChange={handleChange}
           value={form.password}
-          style={{ display: 'block', width: '100%', padding: '10px', marginBottom: '10px' }}
-        />
-        <select
-          name="role"
           onChange={handleChange}
+          error={!!errors.password}
+          helperText={errors.password}
+          sx={{ mb: 2 }}
+        />
+
+        <TextField
+          select
+          label="Role"
+          name="role"
           value={form.role}
-          style={{ display: 'block', width: '100%', padding: '10px', marginBottom: '10px' }}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
         >
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-        </select>
-        <button type="submit" style={{ padding: '10px 20px' }}>Register</button>
+          <MenuItem value="user">User</MenuItem>
+          <MenuItem value="admin">Admin</MenuItem>
+        </TextField>
+
+        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+          Register
+        </Button>
       </form>
-      <p style={{ marginTop: '15px' }}>
-        Already have an account? <Link to="/login">Login</Link>
-      </p>
+
+      <Typography variant="body2" sx={{ mt: 2 }}>
+        Already have an account? <Link to={ROUTES.LOGIN}>Login</Link>
+      </Typography>
     </div>
   );
 }
 
 export default Register;
-
-const formStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '10px',
-  maxWidth: '300px',
-  margin: 'auto',
-  paddingTop: '100px',
-};

@@ -1,27 +1,36 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Dashboard.css"; // Optional for styling
+import "../Styles/Dashboard.css";
 
-const Dashboard = () => {
-  const [movies, setMovies] = useState([]);
-  const [search, setSearch] = useState("");
+// Define Movie type
+interface Movie {
+  _id:string;
+ code: string;
+  title: string;
+  genre: string;
+  releaseDate: string;
+  description: string;
+  action: string;
+}
+
+const Dashboard: React.FC = () => {
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
-    // Fetch all movies from backend
     const fetchMovies = async () => {
       const token = localStorage.getItem("token");
       try {
-        const res = await axios.get("http://localhost:5000/api/movies", {
-        headers: {
-        Authorization: `Bearer ${token}`, 
-  },
-});
-        setMovies(res.data);
+        const res = await axios.get<{ data: Movie[] }>("http://localhost:5000/api/movies", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setMovies(res.data.data);
       } catch (error) {
         console.error("Error fetching movies:", error);
       }
     };
-
     fetchMovies();
   }, []);
 
@@ -46,7 +55,7 @@ const Dashboard = () => {
             <h3>{movie.title}</h3>
             <p><strong>Genre:</strong> {movie.genre}</p>
             <p><strong>Release:</strong> {new Date(movie.releaseDate).toDateString()}</p>
-            <p><strong>Description:</strong>{movie.description}</p>
+            <p><strong>Description:</strong> {movie.description}</p>
             <button>{movie.action}</button>
           </div>
         ))}

@@ -2,6 +2,7 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext.tsx';
+import ROUTES from '../Constants/route.ts';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Navbar: React.FC = () => {
         {/* Logo */}
         <Box
           sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-          onClick={() => navigate('/')}
+          onClick={() => navigate(ROUTES.DASHBOARD)}
         >
           <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: '#FFD700' }}>
             SonyLIV
@@ -23,7 +24,7 @@ const Navbar: React.FC = () => {
         {/* Right Side Buttons */}
         <Box sx={{ display: 'flex', gap: 2 }}>
           {isAuthenticated && isAdmin && (
-            <Button color="inherit" onClick={() => navigate('/admin')}>
+            <Button color="inherit" onClick={() => navigate(ROUTES.ADMIN)}>
               Admin Panel
             </Button>
           )}
@@ -33,7 +34,7 @@ const Navbar: React.FC = () => {
               Logout
             </Button>
           ) : (
-            <Button color="inherit" onClick={() => navigate('/login')}>
+            <Button color="inherit" onClick={() => navigate(ROUTES.LOGIN)}>
               Login
             </Button>
           )}

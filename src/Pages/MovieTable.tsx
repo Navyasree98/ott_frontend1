@@ -16,8 +16,16 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+  interface Movie {
+  _id: string;
+  code: string;
+  title: string;
+  genre: string;
+  releaseDate: Date;
+  action?: string;
+}
 const MovieTable = () => {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(0); // pagination page
   const [rowsPerPage, setRowsPerPage] = useState(5); // default rows per page
 

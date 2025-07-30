@@ -5,6 +5,7 @@ import {
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ArrowBack } from '@mui/icons-material';
+import ROUTES from '../Constants/route.ts';
 
 const AddMoviePage: React.FC = () => {
   const [movieData, setMovieData] = useState({
@@ -27,7 +28,6 @@ const AddMoviePage: React.FC = () => {
 
   const handleSubmit = async () => {
   const token = localStorage.getItem("token");
-  console.log("Token",token);
 
   try {
     await axios.post('http://localhost:5000/api/movies', movieData, {
@@ -35,7 +35,7 @@ const AddMoviePage: React.FC = () => {
         Authorization: `Bearer ${token}`, // Attach token in header
       },
     });
-    navigate('/movie'); // Redirect to movie list page
+    navigate(ROUTES.MOVIE_TABLE); // Redirect to movie list page
   } catch (error) {
     console.error('Failed to add movie:', error);
   }
@@ -44,7 +44,7 @@ const AddMoviePage: React.FC = () => {
   return (
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <IconButton color="primary" onClick={() => navigate("/admin")}>
+        <IconButton color="primary" onClick={() => navigate(ROUTES.ADMIN)}>
           <ArrowBack />
         </IconButton>
       </Box>

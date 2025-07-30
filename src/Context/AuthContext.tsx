@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode} from 'react';
 import { useNavigate } from 'react-router-dom';
+import ROUTES from '../Constants/route.ts';
 
 interface AuthContextType {
   token: string | null;
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('role', userrole);
     setToken(token);
     setUserRole(userrole);
-    navigate('/'); // Redirect after login
+    navigate(ROUTES.DASHBOARD); // Redirect after login
   };
 
   const logout = () => {
@@ -38,7 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('role');
     setToken(null);
     setUserRole('user');
-    navigate('/'); // Redirect after logout
+    navigate(ROUTES.DASHBOARD); // Redirect after logout
     alert("Logout successful");
   };
 
