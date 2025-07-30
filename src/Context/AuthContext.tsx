@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode} from 'react';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../Constants/route.ts';
-
+import {toast} from 'react-toastify';
 interface AuthContextType {
   token: string | null;
   userRole: string;
@@ -34,14 +34,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     navigate(ROUTES.DASHBOARD); // Redirect after login
   };
 
-  const logout = () => {
+const logout = async () => {
+  const token = localStorage.getItem('token');
+
+  try {
+    if (token) {
+      await fetch('http://localhost:5000/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // send token for blacklist
+        },
+      });
+    }
+  } catch (error) {
+    console.error('Logout API failed:', error);
+  } finally {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     setToken(null);
     setUserRole('user');
-    navigate(ROUTES.DASHBOARD); // Redirect after logout
-    alert("Logout successful");
-  };
+    navigate(ROUTES.DASHBOARD);
+    toast.success('Logout successful');
+  }
+};
 
   const isAuthenticated = !!token;
   const isAdmin = userRole === 'admin';

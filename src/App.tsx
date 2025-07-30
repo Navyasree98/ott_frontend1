@@ -12,6 +12,8 @@ import { AuthProvider } from './Context/AuthContext.tsx';
 import ROUTES from './Constants/route.ts';
 import Unauthorized from './Pages/Unauthorized.tsx';
 import AdminRoute from './Components/AdminRoute.tsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = () => {
   return (
@@ -27,7 +29,9 @@ const App: React.FC = () => {
         <Route path={ROUTES.EDIT_MOVIE} element={<AdminRoute><EditMovie /></AdminRoute>} />
         <Route path={ROUTES.ADD_MOVIE} element={<AdminRoute><AddMovie /></AdminRoute>} />
       </Routes>
+      <ToastContainer />
     </AuthProvider>
+    
   );
 };
 

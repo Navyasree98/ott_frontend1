@@ -4,6 +4,7 @@ import axios from 'axios';
 import {useAuth} from '../Context/AuthContext.tsx';
 import '../Styles/Login.css';
 import ROUTES from '../Constants/route.ts';
+import {toast} from 'react-toastify'; 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const {login} =useAuth();
@@ -23,9 +24,9 @@ const LoginForm: React.FC = () => {
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
       const { token, userrole } = response.data;
       login(token, userrole);
-    alert("Login successful!");
+    toast.success("Login successful!");
     } catch (err) {
-      alert("Login failed");
+      toast.error("Login failed");
     }
     // After successful login
     navigate(ROUTES.DASHBOARD); 
