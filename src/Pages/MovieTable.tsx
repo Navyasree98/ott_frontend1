@@ -39,7 +39,7 @@ const MovieTable = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setMovies(res.data);
+      setMovies(res.data.data);
     } catch (error) {
       console.error("Failed to fetch movies:", error);
     }

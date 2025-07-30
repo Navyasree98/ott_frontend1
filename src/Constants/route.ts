@@ -6,6 +6,7 @@ export interface RoutesType {
   EDIT_MOVIE: string;
   ADD_MOVIE: string;
   ADMIN: string;
+  UNAUTHORIZED: string;
 }
 
 const ROUTES: RoutesType = {
@@ -16,6 +17,7 @@ const ROUTES: RoutesType = {
   EDIT_MOVIE: "/edit-movie/:id",
   ADD_MOVIE: "/add-movie",
   ADMIN: "/admin",
+  UNAUTHORIZED: "/unauthorized",
 };
 
 export default ROUTES;
