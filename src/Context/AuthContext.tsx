@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, ReactNode} from 'react';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../Constants/route.ts';
 import {toast} from 'react-toastify';
+import { ROLES } from '../Constants/role.ts';
 interface AuthContextType {
   token: string | null;
   userRole: string;
@@ -60,7 +61,7 @@ const logout = async () => {
 };
 
   const isAuthenticated = !!token;
-  const isAdmin = userRole === 'admin';
+  const isAdmin = userRole === ROLES.ADMIN;
   return (
     <AuthContext.Provider value={{ token, userRole, isAuthenticated, isAdmin, login, logout }}>
       {children}
