@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Typography, Box } from '@mui/material';
-import ROUTES from "../Constants/route.ts"
+import ROUTES from "../Constants/route.ts";
 
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();

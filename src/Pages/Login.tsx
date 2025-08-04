@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import {useAuth} from '../Context/AuthContext.tsx';
 import '../Styles/Login.css';
 import ROUTES from '../Constants/route.ts';
-import {toast} from 'react-toastify'; 
+import {toast} from 'react-toastify';
+import axiosInstance from '../Utils/axiosInstance.tsx';
+import API from '../Constants/api.ts';
+
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const {login} =useAuth();
@@ -21,7 +23,7 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+      const response = await axiosInstance.post(API.LOGIN, formData);
       const { token, userrole } = response.data;
       login(token, userrole);
     toast.success("Login successful!");

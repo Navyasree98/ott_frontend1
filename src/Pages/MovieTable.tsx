@@ -13,8 +13,11 @@ import {
   IconButton,
   TablePagination,
 } from "@mui/material";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from '../Utils/axiosInstance.tsx';
+import API from '../Constants/api.ts';
+import {toast} from 'react-toastify';
+
 
   interface Movie {
   _id: string;
@@ -34,7 +37,7 @@ const MovieTable = () => {
   const fetchMovies = async () => {
     const token = localStorage.getItem("token");
     try {
-      const res = await axios.get("http://localhost:5000/api/movies", {
+      const res = await axiosInstance.get(API.MOVIES, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -52,14 +55,16 @@ const MovieTable = () => {
   const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`http://localhost:5000/api/movies/${id}`, {
+      await axiosInstance.delete(`${API.MOVIES}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       fetchMovies();
+      toast.success("Movie deleted successfully");
     } catch (error) {
       console.error("Failed to delete movie:", error);
+      toast.error("Failed to delete movie");
     }
   };
 

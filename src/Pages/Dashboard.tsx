@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "../Styles/Dashboard.css";
+import axiosInstance from "../Utils/axiosInstance.tsx";
+import API from "../Constants/api.ts";
 
 // Define Movie type
 interface Movie {
@@ -21,7 +22,7 @@ const Dashboard: React.FC = () => {
     const fetchMovies = async () => {
       const token = localStorage.getItem("token");
       try {
-        const res = await axios.get<{ data: Movie[] }>("http://localhost:5000/api/movies", {
+        const res = await axiosInstance.get<{ data: Movie[] }>(API.MOVIES, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

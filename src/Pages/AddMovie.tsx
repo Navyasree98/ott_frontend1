@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import {
   Container, TextField, Button, Typography, Box, IconButton,
 } from '@mui/material';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ArrowBack } from '@mui/icons-material';
 import ROUTES from '../Constants/route.ts';
+import axiosInstance from '../Utils/axiosInstance.tsx';
+import API from '../Constants/api.ts';
+import {toast} from 'react-toastify'; 
 
 const AddMoviePage: React.FC = () => {
   const [movieData, setMovieData] = useState({
@@ -30,14 +32,15 @@ const AddMoviePage: React.FC = () => {
   const token = localStorage.getItem("token");
 
   try {
-    await axios.post('http://localhost:5000/api/movies', movieData, {
+    await axiosInstance.post(API.MOVIES, movieData,{
       headers: {
         Authorization: `Bearer ${token}`, // Attach token in header
       },
     });
+    toast("Movie added successfully");
     navigate(ROUTES.MOVIE_TABLE); // Redirect to movie list page
   } catch (error) {
-    console.error('Failed to add movie:', error);
+    toast('Failed to add movie:', error);
   }
 };
 

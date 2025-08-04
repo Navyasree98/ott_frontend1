@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { TextField, Button, Typography, MenuItem } from '@mui/material';
 import '../Styles/Register.css';
 import ROUTES from '../Constants/route.ts';
 import {toast} from 'react-toastify';
+import axiosInstance from '../Utils/axiosInstance.tsx';
+import API from '../Constants/api.ts';
 
 function Register() {
   const [form, setForm] = useState({
@@ -66,7 +67,7 @@ function Register() {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/register', form);
+      const res = await axiosInstance.post(API.REGISTER, form);
       toast(res.data.message);
       navigate(ROUTES.LOGIN);
     } catch (err: any) {
